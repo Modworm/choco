@@ -1,16 +1,13 @@
 ﻿$ErrorActionPreference = 'Stop'
 
 $packageName = $env:ChocolateyPackageName
-$installDir = "$env:ProgramFiles\rain" 
+$installDir = Join-Path $env:ChocolateyInstall 'bin'
+$exePath = Join-Path $installDir 'rain.exe'
 
-if (Test-Path $installDir) {
-    Remove-Item -Path $installDir -Recurse -Force
-    if (-not (Test-Path $installDir)) {
-        Write-Host "Uninstallation completed successfully."
-    } else {
-        Write-Host "Failed to uninstall. Please check permissions and try again."
-    }
+if (Test-Path $exePath) {
+    Write-Host "Removing $exePath"
+    Remove-Item $exePath -Force
+    Write-Host "$exePath has been removed"
 } else {
-    Write-Host "Installation directory not found. Skipping uninstallation."
+    Write-Host "$exePath not found, nothing to remove"
 }
-
