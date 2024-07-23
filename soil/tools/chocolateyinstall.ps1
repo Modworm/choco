@@ -1,18 +1,20 @@
 ﻿$ErrorActionPreference = 'Stop'
 
 $packageName = $env:ChocolateyPackageName
-$toolsDir = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $tempDir = Join-Path $env:TEMP "chocolatey\$packageName"
 
-$zipUrl = 'https://modworm.com/soil_v1.0.0_windows.zip'
+$zipUrl = 'https://modworm.com/soil_v2.0.0_windows.zip'
+$zipChecksum = '5ff7076ecc2fd8775e9ec18fd9bd19edb46e76f300616ff9615ef508b8bfeaeb'
+$zipChecksumType = 'sha256'  
 
 New-Item -ItemType Directory -Force -Path $tempDir | Out-Null
 
 Write-Host "Downloading $zipUrl to $tempDir\$packageName.zip"
-Invoke-WebRequest -Uri $zipUrl -OutFile "$tempDir\$packageName.zip"
+$zipPath = Join-Path $tempDir "$packageName.zip"
+Get-ChocolateyWebFile -PackageName $packageName -FileFullPath $zipPath -Url $zipUrl -Checksum $zipChecksum -ChecksumType $zipChecksumType
 
 Write-Host "Extracting $tempDir\$packageName.zip to $tempDir"
-Expand-Archive -Path "$tempDir\$packageName.zip" -DestinationPath $tempDir -Force
+Get-ChocolateyUnzip -FileFullPath $zipPath -Destination $tempDir
 
 $fileLocation = Join-Path $tempDir 'soil\soil.exe'
 
