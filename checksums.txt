@@ -1,0 +1,5 @@
+#soil v1.0.0
+$zipChecksum = '42770dfdf73cf6d5fb166d73cde4cf0d8cba1b9f33c7a4b8fb33805b29cade1d'
+
+#soil v2.0.0
+$zipChecksum = '5ff7076ecc2fd8775e9ec18fd9bd19edb46e76f300616ff9615ef508b8bfeaeb'

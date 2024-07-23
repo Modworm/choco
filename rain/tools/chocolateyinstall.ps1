@@ -1,18 +1,21 @@
 ﻿$ErrorActionPreference = 'Stop'
 
 $packageName = $env:ChocolateyPackageName
-$toolsDir = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $tempDir = Join-Path $env:TEMP "chocolatey\$packageName"
 
 $zipUrl = 'https://modworm.com/rain_v1.0.0_windows.zip'
+$zipChecksum = '5c2b678604a7fa3fdcf36428f28d6dbe4a8813c5f9f4ea2f2d6385bc49f56e1e'
+$zipChecksumType = 'sha256'
 
 New-Item -ItemType Directory -Force -Path $tempDir | Out-Null
 
 Write-Host "Downloading $zipUrl to $tempDir\$packageName.zip"
-Invoke-WebRequest -Uri $zipUrl -OutFile "$tempDir\$packageName.zip"
+$zipPath = Join-Path $tempDir "$packageName.zip"
+Get-ChocolateyWebFile -PackageName $packageName -FileFullPath $zipPath -Url $zipUrl -Checksum $zipChecksum -ChecksumType $zipChecksumType
 
 Write-Host "Extracting $tempDir\$packageName.zip to $tempDir"
-Expand-Archive -Path "$tempDir\$packageName.zip" -DestinationPath $tempDir -Force
+Get-ChocolateyUnzip -FileFullPath $zipPath -Destination $tempDir
+
 
 $fileLocation = Join-Path $tempDir 'rain\rain.exe'
 
