@@ -1,7 +1,9 @@
 ﻿$ErrorActionPreference = 'Stop'
 
 $packageName = $env:ChocolateyPackageName
-$installDir = Join-Path $env:ChocolateyInstall 'lib' $packageName
+
+$installDir = Join-Path -Path $env:ChocolateyInstall -ChildPath 'lib'
+$installDir = Join-Path -Path $installDir -ChildPath $packageName
 
 if (Test-Path $installDir) {
     Write-Host "Removing $installDir"
